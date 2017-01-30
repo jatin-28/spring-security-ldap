@@ -1,9 +1,8 @@
 package com.howtodoinjava;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,47 +11,34 @@ import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.memory.InMemoryDaoImpl;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//@ContextConfiguration(locations = { "classpath:application-security.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:application-security.xml"})
 public class TestDemoService {
-	
-	static ApplicationContext applicationContext = null;
-	static InMemoryDaoImpl userDetailsService = null;
 
-//	@Autowired
-//	private DemoService demoService;
-//
-//	@Autowired
-//	private InMemoryDaoImpl userDetailsService;
+	@Autowired
+	private DemoService testObj;
 
+	@Autowired
+	private InMemoryDaoImpl userDetailsService;
 
-	/**
-	 * Initialize the application context to re-use in all test cases
-	 * */
-	@BeforeClass
-	public static void setup()
-	{
-		//Create application context instance
-		applicationContext = new ClassPathXmlApplicationContext("application-security.xml");
-		//Get user details service configured in configuration
-		userDetailsService = applicationContext.getBean(InMemoryDaoImpl.class);
-	}
-	
 	/**
 	 * Test the valid user with valid role
 	 * */
 	@Test 
 	public void testValidRole()
 	{
-		//Get the user by username from configured user details service
+		//Get the user by username from configured user details testObj
 		UserDetails userDetails = userDetailsService.loadUserByUsername ("lokesh");
 		Authentication authToken = new UsernamePasswordAuthenticationToken (userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authToken);
-		DemoService service = (DemoService) applicationContext.getBean("demoService");
-		service.method();
+
+		testObj.method();
 	}
 	
 	/**
@@ -66,8 +52,8 @@ public class TestDemoService {
 		authorities.add(new GrantedAuthorityImpl("ROLE_INVALID"));
 		Authentication authToken = new UsernamePasswordAuthenticationToken (userDetails.getUsername(), userDetails.getPassword(), authorities);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
-		DemoService service = (DemoService) applicationContext.getBean("demoService");
-		service.method();
+
+		testObj.method();
 	}
 	
 	/**
@@ -81,8 +67,8 @@ public class TestDemoService {
 		authorities.add(new GrantedAuthorityImpl("ROLE_INVALID"));
 		Authentication authToken = new UsernamePasswordAuthenticationToken (userDetails.getUsername(), userDetails.getPassword(), authorities);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
-		DemoService service = (DemoService) applicationContext.getBean("demoService");
-		service.method();
+
+		testObj.method();
 	}
 	
 }
