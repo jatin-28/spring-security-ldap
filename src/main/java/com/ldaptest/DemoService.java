@@ -1,10 +1,10 @@
 package com.ldaptest;
 
-import org.springframework.security.access.annotation.Secured;
+import javax.annotation.security.RolesAllowed;
 
 public class DemoService {
 
-	@Secured("ROLE_USER")
+	@RolesAllowed("ROLE_USER")
 	public void method()
 	{
 		System.out.println("Method called");
