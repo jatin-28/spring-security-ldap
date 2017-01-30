@@ -1,4 +1,4 @@
-package com.howtodoinjava;
+package com.ldaptest;
 
 import org.springframework.security.access.annotation.Secured;
 

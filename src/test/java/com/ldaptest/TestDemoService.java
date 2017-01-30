@@ -1,4 +1,4 @@
-package com.howtodoinjava;
+package com.ldaptest;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

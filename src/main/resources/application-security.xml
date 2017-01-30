@@ -19,6 +19,6 @@
         </security:authentication-provider>
     </security:authentication-manager>
     
-    <bean id="demoService" class="com.howtodoinjava.DemoService"/>
+    <bean id="demoService" class="com.ldaptest.DemoService"/>
     
 </beans>
