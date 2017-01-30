@@ -7,10 +7,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.memory.InMemoryDaoImpl;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -25,7 +25,7 @@ public class TestDemoService {
 	private DemoService testObj;
 
 	@Autowired
-	private InMemoryDaoImpl userDetailsService;
+	private InMemoryUserDetailsManager userDetailsService;
 
 	/**
 	 * Test the valid user with valid role
@@ -49,7 +49,7 @@ public class TestDemoService {
 	{
 		UserDetails userDetails = userDetailsService.loadUserByUsername ("lokesh");
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new GrantedAuthorityImpl("ROLE_INVALID"));
+		authorities.add(new SimpleGrantedAuthority("ROLE_INVALID"));
 		Authentication authToken = new UsernamePasswordAuthenticationToken (userDetails.getUsername(), userDetails.getPassword(), authorities);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 
@@ -64,7 +64,7 @@ public class TestDemoService {
 	{
 		UserDetails userDetails = userDetailsService.loadUserByUsername ("admin");
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new GrantedAuthorityImpl("ROLE_INVALID"));
+		authorities.add(new SimpleGrantedAuthority("ROLE_INVALID"));
 		Authentication authToken = new UsernamePasswordAuthenticationToken (userDetails.getUsername(), userDetails.getPassword(), authorities);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 
